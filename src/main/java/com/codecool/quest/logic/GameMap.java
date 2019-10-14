@@ -3,6 +3,8 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 
+import com.codecool.quest.logic.items.Key;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class GameMap {
 
     private Player player;
     private List<Skeleton> skeletons = new ArrayList<>();
+    private Key key;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -43,6 +46,14 @@ public class GameMap {
 
     public List<Skeleton> getSkeleton() {
         return skeletons;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
+    }
+
+    public Key getKey() {
+        return key;
     }
 
     public int getWidth() {

@@ -67,6 +67,19 @@ public class Main extends Application {
         }
         return false;
     }
+    /*
+    private boolean isAKey(int dx, int dy) {
+        Cell nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
+        System.out.println(nextCellType);
+        System.out.println(map.getKey().getCell());
+        if (nextCellType.equals(map.getKey().getCell())) {
+            System.out.println(nextCellType);
+            System.out.println("YES");
+        }
+        return true;
+    }
+
+     */
 
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -106,7 +119,10 @@ public class Main extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else {
+                } else if (cell.getItem() != null) {
+                    Tiles.drawTile(context, cell.getItem(), x, y);
+                }
+                else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
