@@ -34,6 +34,10 @@ public class GameMap {
         return player;
     }
 
+    public void setSkeleton(Skeleton skeleton) {
+        this.skeleton = skeleton;
+    }
+
     public Skeleton getSkeleton() {
         return skeleton;
     }

@@ -1,7 +1,6 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import javafx.application.Application;
@@ -51,34 +50,41 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private boolean isNotAWall(int dx, int dy) {
-        CellType nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy).getType();
-        return !nextCellType.toString().equals("WALL");
+    private boolean isAWall(int dx, int dy) {
+        String nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy).getTileName();
+        return nextCellType.equals("wall");
+    }
+
+    private boolean isASkeleton(int dx, int dy) {
+        Cell playerNextCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
+        Cell skeletonCell = map.getSkeleton().getCell();
+
+        return playerNextCell == skeletonCell;
     }
 
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                if (isNotAWall(0, -1)) {
+                if (!isAWall(0, -1) && !isASkeleton(0, -1)) {
                     map.getPlayer().move(0, -1);
                     refresh();
                 }
                 break;
             case DOWN:
-                if (isNotAWall(0, 1)) {
+                if (!isAWall(0, 1) && !isASkeleton(0, 1)) {
                     map.getPlayer().move(0, 1);
                     refresh();
                 }
                 break;
             case LEFT:
-                if (isNotAWall(-1, 0)) {
+                if (!isAWall(-1, 0) && !isASkeleton(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                     refresh();
                 }
                 break;
             case RIGHT:
-                if (isNotAWall(1, 0)) {
+                if (!isAWall(1, 0) && !isASkeleton(1, 0)) {
                     map.getPlayer().move(1,0);
                     refresh();
                 }
