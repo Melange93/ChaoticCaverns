@@ -3,13 +3,16 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameMap {
     private int width;
     private int height;
     private Cell[][] cells;
 
     private Player player;
-    private Skeleton skeleton;
+    private List<Skeleton> skeletons = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -34,12 +37,12 @@ public class GameMap {
         return player;
     }
 
-    public void setSkeleton(Skeleton skeleton) {
-        this.skeleton = skeleton;
+    public void addSkeleton(Skeleton skeleton) {
+        skeletons.add(skeleton);
     }
 
-    public Skeleton getSkeleton() {
-        return skeleton;
+    public List<Skeleton> getSkeleton() {
+        return skeletons;
     }
 
     public int getWidth() {

@@ -3,6 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -14,6 +15,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.List;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -49,42 +52,45 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
     }
-
-    private boolean isAWall(int dx, int dy) {
+    private boolean nextIsAWall(int dx, int dy) {
         String nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy).getTileName();
         return nextCellType.equals("wall");
     }
 
-    private boolean isASkeleton(int dx, int dy) {
+    private boolean nextIsASkeleton(int dx, int dy) {
         Cell playerNextCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
-        Cell skeletonCell = map.getSkeleton().getCell();
-
-        return playerNextCell == skeletonCell;
+        List<Skeleton> skeletons = map.getSkeleton();
+        for (Skeleton skeleton : skeletons) {
+            if (playerNextCell == skeleton.getCell()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                if (!isAWall(0, -1) && !isASkeleton(0, -1)) {
+                if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1)) {
                     map.getPlayer().move(0, -1);
                     refresh();
                 }
                 break;
             case DOWN:
-                if (!isAWall(0, 1) && !isASkeleton(0, 1)) {
+                if (!nextIsAWall(0, 1) && !nextIsASkeleton(0, 1)) {
                     map.getPlayer().move(0, 1);
                     refresh();
                 }
                 break;
             case LEFT:
-                if (!isAWall(-1, 0) && !isASkeleton(-1, 0)) {
+                if (!nextIsAWall(-1, 0) && !nextIsASkeleton(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                     refresh();
                 }
                 break;
             case RIGHT:
-                if (!isAWall(1, 0) && !isASkeleton(1, 0)) {
+                if (!nextIsAWall(1, 0) && !nextIsASkeleton(1, 0)) {
                     map.getPlayer().move(1,0);
                     refresh();
                 }
