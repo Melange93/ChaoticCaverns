@@ -1,6 +1,7 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import javafx.application.Application;
@@ -50,23 +51,37 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    private boolean isNotAWall(int dx, int dy) {
+        CellType nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy).getType();
+        return !nextCellType.toString().equals("WALL");
+    }
+
+
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                refresh();
+                if (isNotAWall(0, -1)) {
+                    map.getPlayer().move(0, -1);
+                    refresh();
+                }
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
-                refresh();
+                if (isNotAWall(0, 1)) {
+                    map.getPlayer().move(0, 1);
+                    refresh();
+                }
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                refresh();
+                if (isNotAWall(-1, 0)) {
+                    map.getPlayer().move(-1, 0);
+                    refresh();
+                }
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
-                refresh();
+                if (isNotAWall(1, 0)) {
+                    map.getPlayer().move(1,0);
+                    refresh();
+                }
                 break;
         }
     }
