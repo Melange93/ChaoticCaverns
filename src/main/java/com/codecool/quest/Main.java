@@ -87,26 +87,26 @@ public class Main extends Application {
             case UP:
                 if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1)) {
                     map.getPlayer().move(0, -1);
-                    refresh();
                 }
+                refresh();
                 break;
             case DOWN:
                 if (!nextIsAWall(0, 1) && !nextIsASkeleton(0, 1)) {
                     map.getPlayer().move(0, 1);
-                    refresh();
                 }
+                refresh();
                 break;
             case LEFT:
                 if (!nextIsAWall(-1, 0) && !nextIsASkeleton(-1, 0)) {
                     map.getPlayer().move(-1, 0);
-                    refresh();
                 }
+                refresh();
                 break;
             case RIGHT:
                 if (!nextIsAWall(1, 0) && !nextIsASkeleton(1, 0)) {
                     map.getPlayer().move(1,0);
-                    refresh();
                 }
+                refresh();
                 break;
         }
     }
