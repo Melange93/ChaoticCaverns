@@ -3,6 +3,7 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import com.codecool.quest.logic.items.Key;
+import com.codecool.quest.logic.items.Sword;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -39,6 +40,10 @@ public class MapLoader {
                         case 'k':
                             cell.setType(CellType.FLOOR);
                             map.setKey(new Key(cell));
+                            break;
+                        case 'w':
+                            cell.setType(CellType.FLOOR);
+                            map.setSword(new Sword(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
