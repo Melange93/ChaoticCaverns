@@ -1,6 +1,7 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Skeleton;
@@ -63,12 +64,12 @@ public class Main extends Application {
         primaryStage.show();
     }
     private boolean nextIsAWall(int dx, int dy) {
-        String nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy).getTileName();
+        String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
         return nextCellType.equals("wall");
     }
 
     private boolean nextIsASkeleton(int dx, int dy) {
-        Cell playerNextCell = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
+        Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
         List<Skeleton> skeletons = map.getSkeleton();
         for (Skeleton skeleton : skeletons) {
             if (playerNextCell == skeleton.getCell()) {
@@ -81,6 +82,12 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
+            case S:
+                if (map.getPlayer().getCell().getItem() != null) {
+                    map.getPlayer().getCell().setItem(null);
+                }
+                refresh();
+                break;
             case UP:
                 if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1)) {
                     map.getPlayer().move(0, -1);
