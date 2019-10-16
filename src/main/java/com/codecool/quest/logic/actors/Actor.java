@@ -1,6 +1,7 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.Drawable;
 
 public abstract class Actor implements Drawable {
@@ -17,6 +18,7 @@ public abstract class Actor implements Drawable {
         cell.setActor(null);
         nextCell.setActor(this);
         cell = nextCell;
+
     }
 
     public int getHealth() {
@@ -34,4 +36,5 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
+
 }

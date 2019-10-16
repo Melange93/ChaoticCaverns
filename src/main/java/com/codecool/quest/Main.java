@@ -79,7 +79,6 @@ public class Main extends Application {
         return false;
     }
 
-
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case S:
