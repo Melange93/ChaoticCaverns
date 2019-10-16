@@ -11,4 +11,10 @@ public class Player extends Actor {
     public String getTileName() {
         return "player";
     }
+
+    public void pickUp() {
+        if (this.getCell().getItem() != null) {
+            this.getCell().setItem(null);
+        }
+    }
 }

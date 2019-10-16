@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -25,6 +27,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Button pickUpButton = new Button("Pick up");
+
 
     public static void main(String[] args) {
         launch(args);
@@ -38,6 +42,12 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+
+        ui.add(pickUpButton, 0, 1);
+        pickUpButton.setFocusTraversable(false);
+        pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                e -> map.getPlayer().pickUp());
+
 
         BorderPane borderPane = new BorderPane();
 
@@ -67,19 +77,6 @@ public class Main extends Application {
         }
         return false;
     }
-    /*
-    private boolean isAKey(int dx, int dy) {
-        Cell nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
-        System.out.println(nextCellType);
-        System.out.println(map.getKey().getCell());
-        if (nextCellType.equals(map.getKey().getCell())) {
-            System.out.println(nextCellType);
-            System.out.println("YES");
-        }
-        return true;
-    }
-
-     */
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
