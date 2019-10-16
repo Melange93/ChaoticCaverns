@@ -1,17 +1,19 @@
 package com.codecool.quest;
 
 import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Map;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
@@ -28,8 +31,10 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
-    Button pickUpButton = new Button("Pick up");
-    Label inventory = new Label();
+    Button pickUpButton = new Button();
+
+    ListView<String> inventoryElementList = new ListView<>();
+    ObservableList<String> items = FXCollections.observableArrayList ();
 
 
     public static void main(String[] args) {
@@ -48,10 +53,23 @@ public class Main extends Application {
         ui.add(pickUpButton, 0, 1);
         pickUpButton.setFocusTraversable(false);
         pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
-                e -> map.getPlayer().pickUp());
-        ui.add(new Label("Inventory: "), 0, 2);
-        ui.add(inventory, 1, 2);
+            e -> {
+                map.getPlayer().pickUp();
+                items.clear();
+                for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
+                    String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
+                    items.add(kayValueStringPair);
+                }
+            });
 
+
+        ui.add(new Label("Inventory: "), 0, 2);
+
+        inventoryElementList.setItems(items);
+        inventoryElementList.setFocusTraversable(false);
+        inventoryElementList.setPrefSize(120, 100);
+
+        ui.add(inventoryElementList, 0, 4);
 
         BorderPane borderPane = new BorderPane();
 
@@ -86,6 +104,11 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case S:
                 map.getPlayer().pickUp();
+                items.clear();
+                for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
+                    String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
+                    items.add(kayValueStringPair);
+                }
                 refresh();
                 break;
             case UP:
@@ -132,6 +155,6 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
-        inventory.setText("" + map.getPlayer().Invetory());
+        pickUpButton.setText("Pick up");
     }
 }
