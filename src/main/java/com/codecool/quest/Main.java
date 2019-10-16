@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -45,8 +46,13 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+
         ui.add(pickUpButton, 0, 1);
         pickUpButton.setFocusTraversable(false);
+        pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
+                e -> map.getPlayer().pickUp());
+
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
