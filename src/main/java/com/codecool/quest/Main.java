@@ -86,18 +86,12 @@ public class Main extends Application {
     }
     private boolean nextIsAWall(int dx, int dy) {
         String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
-        return nextCellType.equals("wall");
+        return !nextCellType.equals("floor");
     }
 
     private boolean nextIsASkeleton(int dx, int dy) {
         Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
-        List<Skeleton> skeletons = map.getSkeleton();
-        for (Skeleton skeleton : skeletons) {
-            if (playerNextCell == skeleton.getCell()) {
-                return true;
-            }
-        }
-        return false;
+        return playerNextCell.getActor() != null;
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
