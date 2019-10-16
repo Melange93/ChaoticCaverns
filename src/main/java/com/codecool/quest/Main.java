@@ -5,6 +5,9 @@ import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Skeleton;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -14,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -28,6 +32,7 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Button pickUpButton = new Button("Pick up");
 
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -41,6 +46,7 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
         ui.add(pickUpButton, 0, 1);
+        pickUpButton.setFocusTraversable(false);
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -49,7 +55,6 @@ public class Main extends Application {
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
         refresh();
-        scene.setOnMouseClicked(this::);
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Codecool Quest");
@@ -70,19 +75,6 @@ public class Main extends Application {
         }
         return false;
     }
-    /*
-    private boolean isAKey(int dx, int dy) {
-        Cell nextCellType = map.getCell(map.getPlayer().getX(), map.getPlayer().getY()).getNeighbor(dx, dy);
-        System.out.println(nextCellType);
-        System.out.println(map.getKey().getCell());
-        if (nextCellType.equals(map.getKey().getCell())) {
-            System.out.println(nextCellType);
-            System.out.println("YES");
-        }
-        return true;
-    }
-
-     */
 
 
     private void onKeyPressed(KeyEvent keyEvent) {
