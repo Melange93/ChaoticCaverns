@@ -82,9 +82,7 @@ public class Main extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case S:
-                if (map.getPlayer().getCell().getItem() != null) {
-                    map.getPlayer().getCell().setItem(null);
-                }
+                map.getPlayer().pickUp();
                 refresh();
                 break;
             case UP:
