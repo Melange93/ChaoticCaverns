@@ -56,12 +56,7 @@ public class Main extends Application {
         pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
             e -> {
                 map.getPlayer().pickUp();
-                items.clear();
-                for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
-                    String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
-                    items.add(kayValueStringPair);
-                }
-                inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
+                refreshInventory();
             });
 
 
@@ -96,39 +91,61 @@ public class Main extends Application {
         return playerNextCell.getActor() != null;
     }
 
+    private void refreshInventory() {
+        items.clear();
+        for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
+            String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
+            items.add(kayValueStringPair);
+        }
+        inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
+    }
+
+    private boolean nextIsClosedDoor(int dx, int dy) {
+        if (map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance() != null) {
+            String nextCellIsDoor = map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance().getEntranceType().getTileName();
+            if (nextCellIsDoor.equals("closed") && map.getPlayer().Invetory().containsKey("key")) {
+                map.getEntrance().setEntranceType(EntranceType.OPEN);
+                map.getPlayer().Invetory().remove("key");
+                refreshInventory();
+                return true;
+            }
+            if (nextCellIsDoor.equals("open")) {
+                return true;
+            }
+            return false;
+        }
+
+        return true;
+    }
+
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case S:
                 map.getPlayer().pickUp();
-                map.getEntrance().setEntranceType(EntranceType.OPEN);
-                items.clear();
-                for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
-                    String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
-                    items.add(kayValueStringPair);
-                }
-                inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
+                refreshInventory();
                 refresh();
                 break;
             case UP:
-                if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1)) {
+                if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1) && nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
+                    System.out.println( map.getPlayer().Invetory());
                 }
                 refresh();
                 break;
             case DOWN:
-                if (!nextIsAWall(0, 1) && !nextIsASkeleton(0, 1)) {
+                if (!nextIsAWall(0, 1) && !nextIsASkeleton(0, 1) && nextIsClosedDoor(0, 1)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case LEFT:
-                if (!nextIsAWall(-1, 0) && !nextIsASkeleton(-1, 0)) {
+                if (!nextIsAWall(-1, 0) && !nextIsASkeleton(-1, 0) && nextIsClosedDoor(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case RIGHT:
-                if (!nextIsAWall(1, 0) && !nextIsASkeleton(1, 0)) {
+                if (!nextIsAWall(1, 0) && !nextIsASkeleton(1, 0) && nextIsClosedDoor(1, 0)) {
                     map.getPlayer().move(1,0);
                 }
                 refresh();
