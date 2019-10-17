@@ -6,6 +6,7 @@ import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.entrance.EntranceType;
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
+import com.codecool.quest.logic.items.Crown;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -47,6 +48,10 @@ public class MapLoader {
                         case 'w':
                             cell.setType(CellType.FLOOR);
                             map.setSword(new Sword(cell));
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            map.setCrown(new Crown(cell));
                             break;
                         case 'd':
                             cell.setType(CellType.FLOOR);

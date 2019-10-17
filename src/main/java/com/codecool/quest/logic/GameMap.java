@@ -5,6 +5,7 @@ import com.codecool.quest.logic.actors.Skeleton;
 
 import com.codecool.quest.logic.entrance.Entrance;
 
+import com.codecool.quest.logic.items.Crown;
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
 
@@ -19,6 +20,7 @@ public class GameMap {
     private Player player;
     private List<Skeleton> skeletons = new ArrayList<>();
     private Key key;
+    private Crown crown;
     private Sword sword ;
     private Entrance entrance;
 
@@ -60,6 +62,15 @@ public class GameMap {
     public List<Skeleton> getSkeleton() {
         return skeletons;
     }
+
+    public void setCrown(Crown key) {
+        this.crown = crown;
+    }
+
+    public Crown getCrown() {
+        return crown;
+    }
+
 
     public void setKey(Key key) {
         this.key = key;
