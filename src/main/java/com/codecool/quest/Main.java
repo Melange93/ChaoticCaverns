@@ -120,7 +120,7 @@ public class Main extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
-            case S:
+            case E:
                 map.getPlayer().pickUp();
                 refreshInventory();
                 refresh();
@@ -128,7 +128,6 @@ public class Main extends Application {
             case UP:
                 if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1) && nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
-                    System.out.println( map.getPlayer().Invetory());
                 }
                 refresh();
                 break;
