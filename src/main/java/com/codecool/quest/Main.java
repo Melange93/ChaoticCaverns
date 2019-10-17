@@ -60,6 +60,7 @@ public class Main extends Application {
                     String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
                     items.add(kayValueStringPair);
                 }
+                inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
             });
 
 
@@ -67,7 +68,7 @@ public class Main extends Application {
 
         inventoryElementList.setItems(items);
         inventoryElementList.setFocusTraversable(false);
-        inventoryElementList.setPrefSize(120, 100);
+        inventoryElementList.setPrefSize(120, 25);
 
         ui.add(inventoryElementList, 0, 4);
 
@@ -103,6 +104,7 @@ public class Main extends Application {
                     String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
                     items.add(kayValueStringPair);
                 }
+                inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
                 refresh();
                 break;
             case UP:
