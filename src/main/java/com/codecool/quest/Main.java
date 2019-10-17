@@ -4,6 +4,7 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.entrance.EntranceType;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -99,6 +100,7 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case S:
                 map.getPlayer().pickUp();
+                map.getEntrance().setEntranceType(EntranceType.OPEN);
                 items.clear();
                 for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
                     String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
@@ -144,6 +146,8 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
+                } else if (cell.getEntrance() != null) {
+                    Tiles.drawTile(context, cell.getEntrance(), x, y);
                 }
                 else {
                     Tiles.drawTile(context, cell, x, y);

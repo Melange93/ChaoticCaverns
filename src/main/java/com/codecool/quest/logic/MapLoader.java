@@ -2,6 +2,8 @@ package com.codecool.quest.logic;
 
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.entrance.Entrance;
+import com.codecool.quest.logic.entrance.EntranceType;
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
 
@@ -23,6 +25,7 @@ public class MapLoader {
             for (int x = 0; x < width; x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
+                    EntranceType closed = EntranceType.CLOSED;
                     switch (line.charAt(x)) {
                         case ' ':
                             cell.setType(CellType.EMPTY);
@@ -44,6 +47,10 @@ public class MapLoader {
                         case 'w':
                             cell.setType(CellType.FLOOR);
                             map.setSword(new Sword(cell));
+                            break;
+                        case 'd':
+                            cell.setType(CellType.FLOOR);
+                            map.setEntrance(new Entrance(cell, closed));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);

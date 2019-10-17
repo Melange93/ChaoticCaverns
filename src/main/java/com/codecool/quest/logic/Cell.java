@@ -1,14 +1,14 @@
 package com.codecool.quest.logic;
 
 import com.codecool.quest.logic.actors.Actor;
+import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.items.Item;
 
 public class Cell implements Drawable {
     private CellType type;
     private Actor actor;
     private Item item;
-    private Door door;
-    private EntranceType entrance;
+    private Entrance entrance;
     private GameMap gameMap;
     private int x, y;
 
@@ -26,20 +26,12 @@ public class Cell implements Drawable {
         this.type = type;
     }
 
-    public EntranceType getDoorType () {
+    public Entrance getEntrance() {
         return entrance;
     }
 
-    public void  setDoorType(EntranceType entrance) {
+    public void  setEntrance(Entrance entrance) {
         this.entrance = entrance;
-    }
-
-    public void setDoor(Door door) {
-        this.door = door;
-    }
-
-    public Door getDoor() {
-        return door;
     }
 
     public void setActor(Actor actor) {

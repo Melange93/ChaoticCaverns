@@ -1,6 +1,6 @@
-package com.codecool.quest.logic;
+package com.codecool.quest.logic.entrance;
 
-public enum EntranceType implements Drawable{
+public enum EntranceType {
     CLOSED("closed"),
     OPEN("open");
 
@@ -13,5 +13,4 @@ public enum EntranceType implements Drawable{
     public String getTileName() {
         return tileName;
     }
-
 }

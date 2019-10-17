@@ -3,6 +3,8 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 
+import com.codecool.quest.logic.entrance.Entrance;
+
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
 
@@ -18,6 +20,7 @@ public class GameMap {
     private List<Skeleton> skeletons = new ArrayList<>();
     private Key key;
     private Sword sword ;
+    private Entrance entrance;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -40,6 +43,14 @@ public class GameMap {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setEntrance(Entrance entrance) {
+        this.entrance = entrance;
+    }
+
+    public Entrance getEntrance() {
+        return entrance;
     }
 
     public void addSkeleton(Skeleton skeleton) {
@@ -69,4 +80,5 @@ public class GameMap {
     public int getHeight() {
         return height;
     }
+
 }
