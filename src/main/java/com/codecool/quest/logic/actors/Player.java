@@ -19,11 +19,12 @@ public class Player extends Actor {
     public void pickUp() {
         int count;
         if (this.getCell().getItem() != null) {
-            if (inventory.containsKey(this.getCell().getItem().getTileName())) {
-                count = inventory.get(this.getCell().getItem().getTileName());
-                inventory.put(this.getCell().getItem().getTileName(), count + 1);
+            String itemName = this.getCell().getItem().getTileName();
+            if (inventory.containsKey(itemName)) {
+                count = inventory.get(itemName);
+                inventory.put(itemName, count + 1);
             } else {
-                inventory.put(this.getCell().getItem().getTileName(), 1);
+                inventory.put(itemName, 1);
             }
             this.getCell().setItem(null);
         }
