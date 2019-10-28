@@ -3,7 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
-import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.entrance.EntranceType;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -22,7 +22,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.List;
 import java.util.Map;
 
 public class Main extends Application {
@@ -104,15 +103,25 @@ public class Main extends Application {
     }
 
     private boolean nextIsClosedDoor(int dx, int dy) {
-        if (map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance() != null) {
-            String nextCellIsDoor = map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoor.equals("closed") && map.getPlayer().Invetory().containsKey("key")) {
-                map.getEntrance().setEntranceType(EntranceType.OPEN);
-                map.getPlayer().Invetory().remove("key");
-                refreshInventory();
-                return true;
+        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
+        if (nextCellCoord.getEntrance() != null) {
+            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
+            if (nextCellIsDoorType.equals("closed") && map.getPlayer().Invetory().containsKey("key")) {
+                for (Entrance entrance : map.getEntrances()) {
+                    if (entrance.getCell() == nextCellCoord) {
+                       entrance.setEntranceType(EntranceType.OPEN);
+                       if (map.getPlayer().Invetory().get("key") > 1) {
+                           int keyAmount = map.getPlayer().Invetory().get("key");
+                           map.getPlayer().Invetory().put("key", keyAmount - 1);
+                       } else {
+                           map.getPlayer().Invetory().remove("key");
+                       }
+                        refreshInventory();
+                        return true;
+                    }
+                }
             }
-            return nextCellIsDoor.equals("open");
+            return nextCellIsDoorType.equals("open");
         }
 
         return true;

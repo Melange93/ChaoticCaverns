@@ -22,7 +22,7 @@ public class GameMap {
     private Key key;
     private Crown crown;
     private Sword sword ;
-    private Entrance entrance;
+    private List<Entrance> entrances = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -47,22 +47,24 @@ public class GameMap {
         return player;
     }
 
-    public void setEntrance(Entrance entrance) {
-        this.entrance = entrance;
+    public void addEntrance(Entrance entrance) {
+        entrances.add(entrance);
     }
 
-    public Entrance getEntrance() {
-        return entrance;
+    public List<Entrance> getEntrances() {
+        return entrances;
     }
 
+    
     public void addSkeleton(Skeleton skeleton) {
         skeletons.add(skeleton);
     }
 
-    public List<Skeleton> getSkeleton() {
+    public List<Skeleton> getSkeletons() {
         return skeletons;
     }
 
+    
     public void setCrown(Crown key) {
         this.crown = crown;
     }
@@ -80,10 +82,12 @@ public class GameMap {
         return key;
     }
 
+   
     public void setSword(Sword sword) { this.sword = sword; }
 
     public Sword getSword() { return sword; }
 
+    
     public int getWidth() {
         return width;
     }
