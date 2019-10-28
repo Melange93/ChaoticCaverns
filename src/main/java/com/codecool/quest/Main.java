@@ -81,6 +81,7 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
     }
+    /*
     private boolean nextIsAWall(int dx, int dy) {
         String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
         return !nextCellType.equals("floor");
@@ -90,6 +91,8 @@ public class Main extends Application {
         Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
         return playerNextCell.getActor() != null;
     }
+
+     */
 
     private void refreshInventory() {
         items.clear();
@@ -109,14 +112,13 @@ public class Main extends Application {
                 refreshInventory();
                 return true;
             }
-            if (nextCellIsDoor.equals("open")) {
-                return true;
-            }
-            return false;
+            return nextCellIsDoor.equals("open");
         }
 
         return true;
     }
+
+
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -126,25 +128,25 @@ public class Main extends Application {
                 refresh();
                 break;
             case UP:
-                if (!nextIsAWall(0, -1) && !nextIsASkeleton(0, -1) && nextIsClosedDoor(0, -1)) {
+                if (nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
                 }
                 refresh();
                 break;
             case DOWN:
-                if (!nextIsAWall(0, 1) && !nextIsASkeleton(0, 1) && nextIsClosedDoor(0, 1)) {
+                if (nextIsClosedDoor(0, 1)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case LEFT:
-                if (!nextIsAWall(-1, 0) && !nextIsASkeleton(-1, 0) && nextIsClosedDoor(-1, 0)) {
+                if (nextIsClosedDoor(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case RIGHT:
-                if (!nextIsAWall(1, 0) && !nextIsASkeleton(1, 0) && nextIsClosedDoor(1, 0)) {
+                if (nextIsClosedDoor(1, 0)) {
                     map.getPlayer().move(1,0);
                 }
                 refresh();
