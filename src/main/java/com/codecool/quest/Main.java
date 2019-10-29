@@ -126,9 +126,17 @@ public class Main extends Application {
     private void dropLoot(Cell cell) {
         if (cell.getActor() == null) {
             int dropChance = rand.nextInt(100);
-            if (dropChance < 34) {
+            if (dropChance < 99) {
                 // here the game can choose from different items with rand maybe
-                map.setApple(new Apple(cell));
+                int randItem = rand.nextInt(2);
+                switch (randItem) {
+                    case 0:
+                        map.setApple(new Apple(cell));
+                        break;
+                    case 1:
+                        map.setCrown(new Crown(cell));
+                        break;
+                }
             }
         }
 
