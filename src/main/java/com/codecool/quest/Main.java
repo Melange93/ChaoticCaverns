@@ -3,6 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.actors.move.PlayerMovementHelper;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
@@ -116,9 +117,9 @@ public class Main extends Application {
 
     private boolean nextIsClosedDoor(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
-        if (nextCellCoord.getEntrance() != null) {
+        if (map.getPlayer().isAnEntrance(dx, dy)) {
             String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoorType.equals("closed") && map.getPlayer().getInventory().containsKey("key")) {
+            if (map.getPlayer().isAClosedDoor(dx, dy) && map.getPlayer().getInventory().containsKey("key")) {
                 for (Entrance entrance : map.getEntrances()) {
                     if (entrance.getCell() == nextCellCoord) {
                        entrance.setEntranceType(EntranceType.OPEN);
@@ -160,6 +161,7 @@ public class Main extends Application {
                 refresh();
                 break;
             case W:
+                PlayerMovementHelper movementHelper = new PlayerMovementHelper(map.getPlayer(), 0, -1, map.getEntrances());
                 if (nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
                 }

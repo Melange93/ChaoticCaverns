@@ -1,15 +1,17 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.entrance.Entrance;
+import com.codecool.quest.logic.entrance.EntranceType;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Actor {
-    private HashMap<String, Integer> inventory = new HashMap<String, Integer>();
     public Player(Cell cell) {
         super(cell, 10, 2, 0);
     }
+    private HashMap<String, Integer> inventory = new HashMap<String, Integer>();
     public HashMap<String, Integer> getInventory() {
         return inventory;
     }
@@ -56,5 +58,4 @@ public class Player extends Actor {
             cell.getActor().setHealth(playerHealth - (monsterDamage - playerArmor));
         }
     }
-
 }
