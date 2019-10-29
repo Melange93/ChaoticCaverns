@@ -1,10 +1,12 @@
 package com.codecool.quest.logic;
 
+import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 
 import com.codecool.quest.logic.entrance.Entrance;
 
+import com.codecool.quest.logic.items.BreastPlate;
 import com.codecool.quest.logic.items.Crown;
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
@@ -18,11 +20,12 @@ public class GameMap {
     private Cell[][] cells;
 
     private Player player;
-    private List<Skeleton> skeletons = new ArrayList<>();
+    private List<Actor> monsters = new ArrayList<>();
     private Key key;
     private Crown crown;
     private Sword sword ;
     private Entrance entrance;
+    private BreastPlate breastPlate;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -55,13 +58,9 @@ public class GameMap {
         return entrance;
     }
 
-    public void addSkeleton(Skeleton skeleton) {
-        skeletons.add(skeleton);
-    }
+    public void addSkeleton(Skeleton skeleton) { monsters.add(skeleton); }
 
-    public List<Skeleton> getSkeleton() {
-        return skeletons;
-    }
+    public List<Actor> getMonsters() { return monsters; }
 
     public void setCrown(Crown key) {
         this.crown = crown;
@@ -70,7 +69,6 @@ public class GameMap {
     public Crown getCrown() {
         return crown;
     }
-
 
     public void setKey(Key key) {
         this.key = key;
@@ -83,6 +81,10 @@ public class GameMap {
     public void setSword(Sword sword) { this.sword = sword; }
 
     public Sword getSword() { return sword; }
+
+    public void setBreastPlate(BreastPlate breastPlate) { this.breastPlate = breastPlate; }
+
+    public BreastPlate getBreastPlate() { return breastPlate; }
 
     public int getWidth() {
         return width;

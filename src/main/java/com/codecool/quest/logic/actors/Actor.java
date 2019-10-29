@@ -6,26 +6,42 @@ import com.codecool.quest.logic.Drawable;
 
 public abstract class Actor implements Drawable {
     private Cell cell;
-    private int health = 10;
+    private int health;
+    private int damage;
+    private int armor;
 
-    public Actor(Cell cell) {
+    public Actor(Cell cell, int health, int damage, int armor) {
         this.cell = cell;
         this.cell.setActor(this);
+        this.health = health;
+        this.damage = damage;
+        this.armor = armor;
     }
 
     public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        if (nextCell.getTileName().equals("floor") && nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
+        if (this.getHealth() > 0) {
+            Cell nextCell = cell.getNeighbor(dx, dy);
+            if (nextCell.getTileName().equals("floor") && nextCell.getActor() == null) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+            }
         }
-
     }
 
-    public int getHealth() {
-        return health;
+    public int getHealth() { return health; }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
+
+    public int getDamage() { return damage; }
+
+    public void setDamage(int damage) { this.damage = damage; }
+
+    public int getArmor() { return armor; }
+
+    public void setArmor(int armor) { this.armor = armor; }
 
     public Cell getCell() {
         return cell;
