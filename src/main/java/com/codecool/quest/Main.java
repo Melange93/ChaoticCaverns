@@ -115,33 +115,6 @@ public class Main extends Application {
         }
 
     }
-    /*
-    private boolean nextIsClosedDoor(int dx, int dy) {
-        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
-        if (map.getPlayer().isAnEntrance(dx, dy)) {
-            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (map.getPlayer().isAClosedDoor(dx, dy) && map.getPlayer().getInventory().containsKey("key")) {
-                for (Entrance entrance : map.getEntrances()) {
-                    if (entrance.getCell() == nextCellCoord) {
-                       entrance.setEntranceType(EntranceType.OPEN);
-                       if (map.getPlayer().getInventory().get("key") > 1) {
-                           int keyAmount = map.getPlayer().getInventory().get("key");
-                           map.getPlayer().getInventory().put("key", keyAmount - 1);
-                       } else {
-                           map.getPlayer().getInventory().remove("key");
-                       }
-                        refreshInventory();
-                        return true;
-                    }
-                }
-            }
-            return nextCellIsDoorType.equals("open");
-        }
-
-        return true;
-    }
-
-     */
 
     private void isPortal(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
@@ -165,9 +138,6 @@ public class Main extends Application {
                     refreshInventory();
                     map.getPlayer().move(0, -1);
                 }
-                isPortal(0, -1);
-                //System.out.println(map.getPlayer().getCell().getNeighbor(0, -1).getTileName());
-                //System.out.println(map.getEntrances().get(1).getTileName());
                 refresh();
                 break;
             case S:
