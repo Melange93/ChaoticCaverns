@@ -56,18 +56,4 @@ public class Player extends Actor {
             cell.getActor().setHealth(playerHealth - (monsterDamage - playerArmor));
         }
     }
-
-    public void attack(Cell cell,Actor monster) {
-        int playerDamage = cell.getActor().getDamage();
-        int monsterDamage = monster.getDamage();
-        int playerHealth = cell.getActor().getHealth();
-        int monsterHealth = monster.getHealth();
-        int playerArmor = cell.getActor().getArmor();
-        monster.setHealth(monsterHealth - playerDamage);
-        if (monster.getHealth() <= 0) {
-            monster.getCell().setActor(null);
-        } else {
-            cell.getActor().setHealth(playerHealth - (monsterDamage - playerArmor));
-        }
-    }
 }
