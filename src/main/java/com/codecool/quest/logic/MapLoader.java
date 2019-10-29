@@ -4,10 +4,7 @@ import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.entrance.EntranceType;
-import com.codecool.quest.logic.items.BreastPlate;
-import com.codecool.quest.logic.items.Key;
-import com.codecool.quest.logic.items.Sword;
-import com.codecool.quest.logic.items.Crown;
+import com.codecool.quest.logic.items.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -101,6 +98,10 @@ public class MapLoader {
                         case 'a':
                             cell.setType(CellType.FLOOR);
                             map.setBreastPlate(new BreastPlate(cell));
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            map.setHealthPotion(new HealthPotion(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

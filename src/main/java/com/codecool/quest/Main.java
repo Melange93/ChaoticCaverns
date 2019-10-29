@@ -23,9 +23,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import com.codecool.quest.logic.items.*;
 import java.util.Map;
+import java.util.Random;
 
 public class Main extends Application {
+    private Random rand = new Random();
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -82,10 +85,6 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private boolean nextIsAWall(int dx, int dy) {
-        String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
-        return !nextCellType.equals("floor");
-    }
 
     private boolean nextIsAMonster(int dx, int dy) {
         Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
@@ -150,10 +149,24 @@ public class Main extends Application {
         return false;
     }
 
+    private void dropLoot(Cell cell) {
+        if (cell.getActor() == null) {
+            int dropChance = rand.nextInt(100);
+            if (dropChance < 34) {
+                // here the game can choose from different items with rand maybe
+                map.setApple(new Apple(cell));
+            }
+        }
 
+    }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
+            case Q:
+                map.getPlayer().usePotion();
+                refreshInventory();
+                refresh();
+                break;
             case E:
                 map.getPlayer().pickUp();
                 refreshInventory();
@@ -197,6 +210,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
                 }
@@ -211,6 +225,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
@@ -227,6 +242,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
@@ -243,6 +259,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
