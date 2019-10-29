@@ -80,18 +80,6 @@ public class Main extends Application {
         primaryStage.setTitle("Codecool Quest");
         primaryStage.show();
     }
-    /*
-    private boolean nextIsAWall(int dx, int dy) {
-        String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
-        return !nextCellType.equals("floor");
-    }
-
-    private boolean nextIsASkeleton(int dx, int dy) {
-        Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
-        return playerNextCell.getActor() != null;
-    }
-
-     */
 
     private void refreshInventory() {
         items.clear();
@@ -127,6 +115,17 @@ public class Main extends Application {
         return true;
     }
 
+    private boolean isPortal(int dx, int dy) {
+        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
+        if (nextCellCoord.getEntrance() != null) {
+            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
+            if (nextCellIsDoorType.equals("down")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -139,6 +138,11 @@ public class Main extends Application {
             case UP:
                 if (nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
+                }
+
+                if (isPortal(0, -1)) {
+                    MapLoader.downMapGameLevel();
+                    map = MapLoader.loadMap();
                 }
                 refresh();
                 break;

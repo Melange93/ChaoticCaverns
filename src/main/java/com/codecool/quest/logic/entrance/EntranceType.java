@@ -3,7 +3,8 @@ package com.codecool.quest.logic.entrance;
 public enum EntranceType {
     CLOSED("closed"),
     OPEN("open"),
-    PORTAL("portal");
+    UP("up"),
+    DOWN("down");
 
     private final String tileName;
 

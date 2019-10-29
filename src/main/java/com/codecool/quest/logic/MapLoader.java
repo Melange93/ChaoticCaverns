@@ -12,19 +12,34 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    private static int gameLevel = 1;
+
+    private static int gameLevel = 0;
     private static String loadMap;
 
     private static void getWhichMapLoad() {
         switch (gameLevel) {
-            case 1:
+            case 0:
                 loadMap = "/map.txt";
                 break;
-            case 2:
+            case 1:
                 loadMap = "/map2.txt";
                 break;
             default:
                 loadMap = "/map.txt";
+        }
+    }
+
+    public static int getGameLevel() {
+        return gameLevel;
+    }
+
+    public static void downMapGameLevel() {
+        gameLevel = gameLevel + 1;
+    }
+
+    public static void upMapGameLevel() {
+        if (gameLevel > 0) {
+            gameLevel = gameLevel - 1;
         }
     }
 
@@ -76,7 +91,7 @@ public class MapLoader {
                             break;
                         case 't':
                             cell.setType(CellType.FLOOR);
-                            map.addEntrance(new Entrance(cell, EntranceType.PORTAL));
+                            map.addEntrance(new Entrance(cell, EntranceType.DOWN));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
