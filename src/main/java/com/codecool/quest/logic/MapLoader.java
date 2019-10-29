@@ -4,6 +4,7 @@ import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.entrance.EntranceType;
+import com.codecool.quest.logic.items.BreastPlate;
 import com.codecool.quest.logic.items.Key;
 import com.codecool.quest.logic.items.Sword;
 import com.codecool.quest.logic.items.Crown;
@@ -60,6 +61,10 @@ public class MapLoader {
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            map.setBreastPlate(new BreastPlate(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
