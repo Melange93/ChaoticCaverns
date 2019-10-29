@@ -24,8 +24,8 @@ public class GameMap {
     private Key key;
     private Crown crown;
     private Sword sword ;
-    private Entrance entrance;
     private BreastPlate breastPlate;
+    private List<Entrance> entrances = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -50,12 +50,12 @@ public class GameMap {
         return player;
     }
 
-    public void setEntrance(Entrance entrance) {
-        this.entrance = entrance;
+    public void addEntrance(Entrance entrance) {
+        entrances.add(entrance);
     }
 
-    public Entrance getEntrance() {
-        return entrance;
+    public List<Entrance> getEntrances() {
+        return entrances;
     }
 
     public void addSkeleton(Skeleton skeleton) { monsters.add(skeleton); }

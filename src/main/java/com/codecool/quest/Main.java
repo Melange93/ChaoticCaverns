@@ -3,6 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
 import javafx.application.Application;
@@ -97,11 +98,11 @@ public class Main extends Application {
 
     private void refreshInventory() {
         items.clear();
-        for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Inventory().entrySet()) {
+        for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().getInventory().entrySet()) {
             String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
             items.add(kayValueStringPair);
         }
-        inventoryElementList.setPrefSize(120, 25 * (map.getPlayer().Inventory().size() + 1));
+        inventoryElementList.setPrefSize(120, 25 * (map.getPlayer().getInventory().size() + 1));
     }
 
     private boolean gameOver() {
@@ -114,22 +115,42 @@ public class Main extends Application {
     }
 
     private boolean nextIsClosedDoor(int dx, int dy) {
-        if (map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance() != null) {
-            String nextCellIsDoor = map.getPlayer().getCell().getNeighbor(dx, dy).getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoor.equals("closed") && map.getPlayer().Inventory().containsKey("key")) {
-                map.getEntrance().setEntranceType(EntranceType.OPEN);
-                map.getPlayer().Inventory().remove("key");
-                refreshInventory();
-                return true;
+        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
+        if (nextCellCoord.getEntrance() != null) {
+            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
+            if (nextCellIsDoorType.equals("closed") && map.getPlayer().getInventory().containsKey("key")) {
+                for (Entrance entrance : map.getEntrances()) {
+                    if (entrance.getCell() == nextCellCoord) {
+                       entrance.setEntranceType(EntranceType.OPEN);
+                       if (map.getPlayer().getInventory().get("key") > 1) {
+                           int keyAmount = map.getPlayer().getInventory().get("key");
+                           map.getPlayer().getInventory().put("key", keyAmount - 1);
+                       } else {
+                           map.getPlayer().getInventory().remove("key");
+                       }
+                        refreshInventory();
+                        return true;
+                    }
+                }
             }
-            if (nextCellIsDoor.equals("open")) {
-                return true;
-            }
-            return false;
+            return nextCellIsDoorType.equals("open");
         }
 
         return true;
     }
+
+    private boolean isPortal(int dx, int dy) {
+        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
+        if (nextCellCoord.getEntrance() != null) {
+            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
+            if (nextCellIsDoorType.equals("down")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
@@ -139,25 +160,30 @@ public class Main extends Application {
                 refresh();
                 break;
             case W:
-                if (!nextIsAWall(0, -1) && !nextIsAMonster(0, -1) && nextIsClosedDoor(0, -1)) {
+                if (nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
+                }
+
+                if (isPortal(0, -1)) {
+                    MapLoader.downMapGameLevel();
+                    map = MapLoader.loadMap();
                 }
                 refresh();
                 break;
             case S:
-                if (!nextIsAWall(0, 1) && !nextIsAMonster(0, 1) && nextIsClosedDoor(0, 1)) {
+                if (nextIsClosedDoor(0, 1)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case A:
-                if (!nextIsAWall(-1, 0) && !nextIsAMonster(-1, 0) && nextIsClosedDoor(-1, 0)) {
+                if (nextIsClosedDoor(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case D:
-                if (!nextIsAWall(1, 0) && !nextIsAMonster(1, 0) && nextIsClosedDoor(1, 0)) {
+                if (nextIsClosedDoor(1, 0)) {
                     map.getPlayer().move(1, 0);
                 }
                 refresh();
@@ -173,8 +199,6 @@ public class Main extends Application {
                             }
                         }
                     }
-
-
                 }
                 refresh();
                 break;

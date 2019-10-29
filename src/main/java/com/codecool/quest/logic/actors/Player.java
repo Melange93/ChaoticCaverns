@@ -3,13 +3,14 @@ package com.codecool.quest.logic.actors;
 import com.codecool.quest.logic.Cell;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Player extends Actor {
-    HashMap<String, Integer> inventory = new HashMap<String, Integer>();
+    private HashMap<String, Integer> inventory = new HashMap<String, Integer>();
     public Player(Cell cell) {
         super(cell, 10, 2, 0);
     }
-    public HashMap<String, Integer> Inventory() {
+    public HashMap<String, Integer> getInventory() {
         return inventory;
     }
     public String getTileName() {
@@ -39,6 +40,20 @@ public class Player extends Actor {
             }
             this.getCell().setItem(null);
             itemChecker();
+        }
+    }
+
+    public void attack(Cell cell,Actor monster) {
+        int playerDamage = cell.getActor().getDamage();
+        int monsterDamage = monster.getDamage();
+        int playerHealth = cell.getActor().getHealth();
+        int monsterHealth = monster.getHealth();
+        int playerArmor = cell.getActor().getArmor();
+        monster.setHealth(monsterHealth - playerDamage);
+        if (monster.getHealth() <= 0) {
+            monster.getCell().setActor(null);
+        } else {
+            cell.getActor().setHealth(playerHealth - (monsterDamage - playerArmor));
         }
     }
 

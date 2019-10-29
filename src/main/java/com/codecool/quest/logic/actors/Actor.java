@@ -4,6 +4,8 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.CellType;
 import com.codecool.quest.logic.Drawable;
 
+import java.util.Map;
+
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health;
@@ -47,6 +49,10 @@ public abstract class Actor implements Drawable {
         return cell;
     }
 
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
     public int getX() {
         return cell.getX();
     }
@@ -54,5 +60,4 @@ public abstract class Actor implements Drawable {
     public int getY() {
         return cell.getY();
     }
-
 }
