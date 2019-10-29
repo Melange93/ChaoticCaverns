@@ -4,6 +4,7 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.entrance.Entrance;
+import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -34,7 +35,7 @@ public class Main extends Application {
     Button pickUpButton = new Button();
 
     ListView<String> inventoryElementList = new ListView<>();
-    ObservableList<String> items = FXCollections.observableArrayList ();
+    ObservableList<String> items = FXCollections.observableArrayList();
 
 
     public static void main(String[] args) {
@@ -53,10 +54,10 @@ public class Main extends Application {
         ui.add(pickUpButton, 0, 1);
         pickUpButton.setFocusTraversable(false);
         pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
-            e -> {
-                map.getPlayer().pickUp();
-                refreshInventory();
-            });
+                e -> {
+                    map.getPlayer().pickUp();
+                    refreshInventory();
+                });
 
 
         ui.add(new Label("Inventory: "), 0, 2);
@@ -81,28 +82,51 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    private boolean nextIsAWall(int dx, int dy) {
+        String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
+        return !nextCellType.equals("floor");
+    }
+
+    private boolean nextIsAMonster(int dx, int dy) {
+        Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
+        return playerNextCell.getActor() != null;
+    }
+
+    private boolean getMonstersCell() {
+        return true;
+    }
+
     private void refreshInventory() {
         items.clear();
-        for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().Invetory().entrySet()) {
+        for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().getInventory().entrySet()) {
             String kayValueStringPair = ((Map.Entry) stringIntegerEntry).getKey().toString() + ": " + ((Map.Entry) stringIntegerEntry).getValue().toString();
             items.add(kayValueStringPair);
         }
-        inventoryElementList.setPrefSize(120, 25 *  (map.getPlayer().Invetory().size() + 1));
+        inventoryElementList.setPrefSize(120, 25 * (map.getPlayer().getInventory().size() + 1));
+    }
+
+    private boolean gameOver() {
+        if (map.getPlayer().getHealth() <= 0) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     private boolean nextIsClosedDoor(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
         if (nextCellCoord.getEntrance() != null) {
             String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoorType.equals("closed") && map.getPlayer().Invetory().containsKey("key")) {
+            if (nextCellIsDoorType.equals("closed") && map.getPlayer().getInventory().containsKey("key")) {
                 for (Entrance entrance : map.getEntrances()) {
                     if (entrance.getCell() == nextCellCoord) {
                        entrance.setEntranceType(EntranceType.OPEN);
-                       if (map.getPlayer().Invetory().get("key") > 1) {
-                           int keyAmount = map.getPlayer().Invetory().get("key");
-                           map.getPlayer().Invetory().put("key", keyAmount - 1);
+                       if (map.getPlayer().getInventory().get("key") > 1) {
+                           int keyAmount = map.getPlayer().getInventory().get("key");
+                           map.getPlayer().getInventory().put("key", keyAmount - 1);
                        } else {
-                           map.getPlayer().Invetory().remove("key");
+                           map.getPlayer().getInventory().remove("key");
                        }
                         refreshInventory();
                         return true;
@@ -135,7 +159,7 @@ public class Main extends Application {
                 refreshInventory();
                 refresh();
                 break;
-            case UP:
+            case W:
                 if (nextIsClosedDoor(0, -1)) {
                     map.getPlayer().move(0, -1);
                 }
@@ -146,21 +170,83 @@ public class Main extends Application {
                 }
                 refresh();
                 break;
-            case DOWN:
+            case S:
                 if (nextIsClosedDoor(0, 1)) {
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
-            case LEFT:
+            case A:
                 if (nextIsClosedDoor(-1, 0)) {
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
-            case RIGHT:
+            case D:
                 if (nextIsClosedDoor(1, 0)) {
-                    map.getPlayer().move(1,0);
+                    map.getPlayer().move(1, 0);
+                }
+                refresh();
+                break;
+            case UP:
+                if (nextIsAMonster(0, -1)) {
+                    Cell playerCell = map.getPlayer().getCell();
+                    for (Actor monster : map.getMonsters()) {
+                        if (monster.getCell().equals(playerCell.getNeighbor(0, -1))) {
+                            map.getPlayer().attack(playerCell, monster);
+                            if (gameOver()) {
+                                playerCell.setActor(null);
+                            }
+                        }
+                    }
+                }
+                refresh();
+                break;
+            case DOWN:
+                if (nextIsAMonster(0, 1)) {
+                    Cell playerCell = map.getPlayer().getCell();
+                    for (Actor monster : map.getMonsters()) {
+                        if (monster.getCell().equals(playerCell.getNeighbor(0, 1))) {
+                            map.getPlayer().attack(playerCell, monster);
+                            if (gameOver()) {
+                                playerCell.setActor(null);
+                            }
+                        }
+                    }
+
+
+                }
+                refresh();
+                break;
+            case RIGHT:
+                if (nextIsAMonster(1,0)) {
+                    Cell playerCell = map.getPlayer().getCell();
+                    for (Actor monster: map.getMonsters()) {
+                        if (monster.getCell().equals(playerCell.getNeighbor(1, 0))) {
+                            map.getPlayer().attack(playerCell, monster);
+                            if (gameOver()) {
+                                playerCell.setActor(null);
+                            }
+                        }
+                    }
+
+
+                }
+                refresh();
+                break;
+            case LEFT:
+                if (nextIsAMonster(-1,0)) {
+                    Cell playerCell = map.getPlayer().getCell();
+                    for (Actor monster: map.getMonsters()) {
+                        if (monster.getCell().equals(playerCell.getNeighbor(-1, 0))) {
+                            map.getPlayer().attack(playerCell, monster);
+                            if (gameOver()) {
+                                playerCell.setActor(null);
+                            }
+                        }
+                    }
+
+
                 }
                 refresh();
                 break;
@@ -179,8 +265,7 @@ public class Main extends Application {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else if (cell.getEntrance() != null) {
                     Tiles.drawTile(context, cell.getEntrance(), x, y);
-                }
-                else {
+                } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
