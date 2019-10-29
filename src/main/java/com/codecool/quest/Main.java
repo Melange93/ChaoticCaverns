@@ -3,6 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
+import com.codecool.quest.logic.PlayerMovementHelper;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
@@ -30,6 +31,7 @@ import java.util.Random;
 public class Main extends Application {
     private Random rand = new Random();
     GameMap map = MapLoader.loadMap();
+    PlayerMovementHelper movementHelper = new PlayerMovementHelper(map.getPlayer(), map.getEntrances());
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -113,40 +115,12 @@ public class Main extends Application {
 
     }
 
-    private boolean nextIsClosedDoor(int dx, int dy) {
+    private void isPortal(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
         if (nextCellCoord.getEntrance() != null) {
             String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoorType.equals("closed") && map.getPlayer().getInventory().containsKey("key")) {
-                for (Entrance entrance : map.getEntrances()) {
-                    if (entrance.getCell() == nextCellCoord) {
-                       entrance.setEntranceType(EntranceType.OPEN);
-                       if (map.getPlayer().getInventory().get("key") > 1) {
-                           int keyAmount = map.getPlayer().getInventory().get("key");
-                           map.getPlayer().getInventory().put("key", keyAmount - 1);
-                       } else {
-                           map.getPlayer().getInventory().remove("key");
-                       }
-                        refreshInventory();
-                        return true;
-                    }
-                }
-            }
-            return nextCellIsDoorType.equals("open");
+            System.out.println(nextCellIsDoorType);
         }
-
-        return true;
-    }
-
-    private boolean isPortal(int dx, int dy) {
-        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
-        if (nextCellCoord.getEntrance() != null) {
-            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoorType.equals("down")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private void dropLoot(Cell cell) {
@@ -173,30 +147,29 @@ public class Main extends Application {
                 refresh();
                 break;
             case W:
-                if (nextIsClosedDoor(0, -1)) {
+                if (movementHelper.canMoveThroughTheDoor(0, -1)) {
+                    refreshInventory();
                     map.getPlayer().move(0, -1);
-                }
-
-                if (isPortal(0, -1)) {
-                    MapLoader.downMapGameLevel();
-                    map = MapLoader.loadMap();
                 }
                 refresh();
                 break;
             case S:
-                if (nextIsClosedDoor(0, 1)) {
+                if (movementHelper.canMoveThroughTheDoor(0, 1)) {
+                    refreshInventory();
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case A:
-                if (nextIsClosedDoor(-1, 0)) {
+                if (movementHelper.canMoveThroughTheDoor(-1, 0)) {
+                    refreshInventory();
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case D:
-                if (nextIsClosedDoor(1, 0)) {
+                if (movementHelper.canMoveThroughTheDoor(1, 0)) {
+                    refreshInventory();
                     map.getPlayer().move(1, 0);
                 }
                 refresh();

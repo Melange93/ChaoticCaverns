@@ -1,6 +1,8 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
+import com.codecool.quest.logic.entrance.Entrance;
+import com.codecool.quest.logic.entrance.EntranceType;
 import com.codecool.quest.logic.items.Apple;
 
 import java.util.HashMap;
