@@ -1,4 +1,4 @@
-package com.codecool.quest.logic.actors.move;
+package com.codecool.quest.logic;
 
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.actors.Player;
@@ -10,32 +10,28 @@ import java.util.List;
 
 public class PlayerMovementHelper {
     private Player player;
-    private int dx;
-    private int dy;
     private List<Entrance> entrances;
 
-    public PlayerMovementHelper(Player player, int dx, int dy, List<Entrance> entrances) {
+    public PlayerMovementHelper(Player player, List<Entrance> entrances) {
         this.player = player;
-        this.dx = dx;
-        this.dy = dy;
         this.entrances = entrances;
     }
 
-    public boolean isAnEntrance() {
+    private boolean isAnEntrance(int dx, int dy) {
         Cell nextCell = player.getCell().getNeighbor(dx, dy);
         return nextCell.getEntrance() != null;
     }
 
-    public boolean isAClosedDoor() {
+    private boolean isAClosedDoor(int dx, int dy) {
         EntranceType nextCellEntranceType = player.getCell().getNeighbor(dx, dy).getEntrance().getEntranceType();
         return nextCellEntranceType == EntranceType.CLOSED;
     }
 
-    public boolean haveKey() {
+    private boolean haveKey() {
         return player.getInventory().containsKey("key");
     }
 
-    public void openDoor() {
+    private void openDoor(int dx, int dy) {
         Cell nextCell = player.getCell().getNeighbor(dx, dy);
         for (Entrance entrance : entrances) {
             if (entrance.getCell() == nextCell) {
@@ -44,7 +40,7 @@ public class PlayerMovementHelper {
         }
     }
 
-    public void decreaseKey() {
+    private void decreaseKey() {
         HashMap<String, Integer> inventory = player.getInventory();
         if (inventory.get("key") > 1) {
             int keyAmount = inventory.get("key");
@@ -54,30 +50,15 @@ public class PlayerMovementHelper {
         }
     }
 
-    public boolean canMoveThroughTheDoor() {
-        if (isAnEntrance()) {
-            if (isAClosedDoor() && haveKey()) {
-                openDoor();
+    public boolean canMoveThroughTheDoor(int dx, int dy) {
+        if (isAnEntrance(dx, dy)) {
+            if (isAClosedDoor(dx, dy) && haveKey()) {
+                openDoor(dx, dy);
                 decreaseKey();
                 return true;
             }
-            return !isAClosedDoor();
+            return !isAClosedDoor(dx, dy);
         }
         return true;
-    }
-
-    public String nextCellTileName() {
-        return player.getCell().getNeighbor(dx, dy).getTileName();
-    }
-
-    public boolean nextCellIsNotAnActor() {
-        return player.getCell().getNeighbor(dx, dy).getActor() == null;
-    }
-
-    public boolean canPlayerMove() {
-        if (nextCellTileName().equals("floor") && nextCellIsNotAnActor() && canMoveThroughTheDoor()) {
-            return true;
-        }
-        return false;
     }
 }

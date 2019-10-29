@@ -3,7 +3,7 @@ package com.codecool.quest;
 import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
-import com.codecool.quest.logic.actors.move.PlayerMovementHelper;
+import com.codecool.quest.logic.PlayerMovementHelper;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
@@ -28,6 +28,7 @@ import java.util.Map;
 
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
+    PlayerMovementHelper movementHelper = new PlayerMovementHelper(map.getPlayer(), map.getEntrances());
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -114,7 +115,7 @@ public class Main extends Application {
         }
 
     }
-
+    /*
     private boolean nextIsClosedDoor(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
         if (map.getPlayer().isAnEntrance(dx, dy)) {
@@ -140,15 +141,14 @@ public class Main extends Application {
         return true;
     }
 
-    private boolean isPortal(int dx, int dy) {
+     */
+
+    private void isPortal(int dx, int dy) {
         Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
         if (nextCellCoord.getEntrance() != null) {
             String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            if (nextCellIsDoorType.equals("down")) {
-                return true;
-            }
+            System.out.println(nextCellIsDoorType);
         }
-        return false;
     }
 
 
@@ -161,31 +161,32 @@ public class Main extends Application {
                 refresh();
                 break;
             case W:
-                PlayerMovementHelper movementHelper = new PlayerMovementHelper(map.getPlayer(), 0, -1, map.getEntrances());
-                if (nextIsClosedDoor(0, -1)) {
+                if (movementHelper.canMoveThroughTheDoor(0, -1)) {
+                    refreshInventory();
                     map.getPlayer().move(0, -1);
                 }
-
-                if (isPortal(0, -1)) {
-                    MapLoader.downMapGameLevel();
-                    map = MapLoader.loadMap();
-                }
+                isPortal(0, -1);
+                //System.out.println(map.getPlayer().getCell().getNeighbor(0, -1).getTileName());
+                //System.out.println(map.getEntrances().get(1).getTileName());
                 refresh();
                 break;
             case S:
-                if (nextIsClosedDoor(0, 1)) {
+                if (movementHelper.canMoveThroughTheDoor(0, 1)) {
+                    refreshInventory();
                     map.getPlayer().move(0, 1);
                 }
                 refresh();
                 break;
             case A:
-                if (nextIsClosedDoor(-1, 0)) {
+                if (movementHelper.canMoveThroughTheDoor(-1, 0)) {
+                    refreshInventory();
                     map.getPlayer().move(-1, 0);
                 }
                 refresh();
                 break;
             case D:
-                if (nextIsClosedDoor(1, 0)) {
+                if (movementHelper.canMoveThroughTheDoor(1, 0)) {
+                    refreshInventory();
                     map.getPlayer().move(1, 0);
                 }
                 refresh();
