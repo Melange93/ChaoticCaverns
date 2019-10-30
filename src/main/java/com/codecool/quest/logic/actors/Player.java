@@ -32,12 +32,12 @@ public class Player extends Actor {
 
     public void itemChecker() {
         if (inventory.containsKey("sword")) {
-            int minDamage = this.getMinDamage();
-            this.setDamage(minDamage + 2);
+            int minDamage = this.getMinDamage() + 2;
+            this.setDamage(minDamage);
         }
         if (inventory.containsKey("plateArmor")) {
-            int currentArmor = this.getArmor();
-            this.setArmor(currentArmor + 2);
+            int currentArmor = this.getMinArmor() + 2;
+            this.setArmor(currentArmor);
         }
         if (inventory.containsKey("apple")) {
             int currentHealth = this.getHealth();
