@@ -9,7 +9,9 @@ import java.util.Map;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health;
+    private int maxHealth = 10;
     private int damage;
+    private int minDamage = 2;
     private int armor;
 
     public Actor(Cell cell, int health, int damage, int armor) {
@@ -36,10 +38,13 @@ public abstract class Actor implements Drawable {
     public void setHealth(int health) {
         this.health = health;
     }
+    public int getMaxHealth() { return maxHealth; }
 
     public int getDamage() { return damage; }
 
     public void setDamage(int damage) { this.damage = damage; }
+
+    public int getMinDamage() {return minDamage;}
 
     public int getArmor() { return armor; }
 

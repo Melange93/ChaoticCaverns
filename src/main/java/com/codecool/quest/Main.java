@@ -93,18 +93,10 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private boolean nextIsAWall(int dx, int dy) {
-        String nextCellType = map.getPlayer().getCell().getNeighbor(dx, dy).getTileName();
-        return !nextCellType.equals("floor");
-    }
 
     private boolean nextIsAMonster(int dx, int dy) {
         Cell playerNextCell = map.getPlayer().getCell().getNeighbor(dx, dy);
         return playerNextCell.getActor() != null;
-    }
-
-    private boolean getMonstersCell() {
-        return true;
     }
 
     private void refreshInventory() {
@@ -146,6 +138,7 @@ public class Main extends Application {
 
     public void movementBetweenLevels(int dx, int dy) {
 
+    }
         if (isAnEntrance()) {
             if (isADownStair(dx, dy)){
                 MapLoader.downMapGameLevel();

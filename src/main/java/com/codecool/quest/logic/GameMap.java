@@ -6,10 +6,7 @@ import com.codecool.quest.logic.actors.Skeleton;
 
 import com.codecool.quest.logic.entrance.Entrance;
 
-import com.codecool.quest.logic.items.BreastPlate;
-import com.codecool.quest.logic.items.Crown;
-import com.codecool.quest.logic.items.Key;
-import com.codecool.quest.logic.items.Sword;
+import com.codecool.quest.logic.items.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,9 @@ public class GameMap {
     private Key key;
     private Crown crown;
     private Sword sword ;
-    private BreastPlate breastPlate;
+    private PlateArmor plateArmor;
+    private HealthPotion healthPotion;
+    private Apple apple;
     private List<Entrance> entrances = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -82,9 +81,17 @@ public class GameMap {
 
     public Sword getSword() { return sword; }
 
-    public void setBreastPlate(BreastPlate breastPlate) { this.breastPlate = breastPlate; }
+    public void setPlateArmor(PlateArmor plateArmor) { this.plateArmor = plateArmor; }
 
-    public BreastPlate getBreastPlate() { return breastPlate; }
+    public PlateArmor getPlateArmor() { return plateArmor; }
+
+    public void setHealthPotion(HealthPotion healthPotion) { this.healthPotion = healthPotion; }
+
+    public HealthPotion getHealthPotion() { return healthPotion; }
+
+    public void setApple(Apple apple) { this.apple = apple; }
+
+    public Apple getApple() { return apple; }
 
     public int getWidth() {
         return width;
