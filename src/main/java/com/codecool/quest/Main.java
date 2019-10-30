@@ -235,7 +235,9 @@ public class Main extends Application {
                         if (monster.getCell().equals(playerCell.getNeighbor(0, -1))) {
                             map.getPlayer().attack(playerCell, monster);
                             if (gameOver()) {
-                                playerCell.setActor(null);
+                                MapLoader.setGameLevel(-1);
+                                saveMaps.clear();
+                                map = MapLoader.loadMap();
                             }
                             dropLoot(monster.getCell());
                         }
@@ -250,7 +252,9 @@ public class Main extends Application {
                         if (monster.getCell().equals(playerCell.getNeighbor(0, 1))) {
                             map.getPlayer().attack(playerCell, monster);
                             if (gameOver()) {
-                                playerCell.setActor(null);
+                                MapLoader.setGameLevel(-1);
+                                saveMaps.clear();
+                                map = MapLoader.loadMap();
                             }
                             dropLoot(monster.getCell());
                         }
@@ -267,7 +271,9 @@ public class Main extends Application {
                         if (monster.getCell().equals(playerCell.getNeighbor(1, 0))) {
                             map.getPlayer().attack(playerCell, monster);
                             if (gameOver()) {
-                                playerCell.setActor(null);
+                                MapLoader.setGameLevel(-1);
+                                saveMaps.clear();
+                                map = MapLoader.loadMap();
                             }
                             dropLoot(monster.getCell());
                         }
@@ -284,7 +290,9 @@ public class Main extends Application {
                         if (monster.getCell().equals(playerCell.getNeighbor(-1, 0))) {
                             map.getPlayer().attack(playerCell, monster);
                             if (gameOver()) {
-                                playerCell.setActor(null);
+                                MapLoader.setGameLevel(-1);
+                                saveMaps.clear();
+                                map = MapLoader.loadMap();
                             }
                             dropLoot(monster.getCell());
                         }

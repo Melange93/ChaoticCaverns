@@ -2,6 +2,8 @@ package com.codecool.quest.logic;
 
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.actors.Ogre;
+import com.codecool.quest.logic.actors.Boss;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.entrance.EntranceType;
 import com.codecool.quest.logic.items.*;
@@ -12,7 +14,7 @@ import java.util.Scanner;
 
 public class MapLoader {
 
-    private static int gameLevel = 0;
+    private static int gameLevel = 1;
     private static String loadMap;
     public static Player savePlayer;
 
@@ -23,11 +25,20 @@ public class MapLoader {
 
     private static void getWhichMapLoad() {
         switch (gameLevel) {
-            case 0:
-                loadMap = "/map.txt";
+            case -1:
+                loadMap = "/gameOver.txt";
                 break;
             case 1:
+                loadMap = "/map.txt";
+                break;
+            case 0:
+                loadMap = "/map0.txt";
+                break;
+            case 2:
                 loadMap = "/map2.txt";
+                break;
+            case 3:
+                loadMap = "/map3.txt";
                 break;
             default:
                 loadMap = "/map.txt";
@@ -37,6 +48,8 @@ public class MapLoader {
     public static int getGameLevel() {
         return gameLevel;
     }
+
+    public static void setGameLevel(int num) { gameLevel = num; }
 
     public static Player getSavePlayer() { return savePlayer; }
 
@@ -52,14 +65,10 @@ public class MapLoader {
 
 
     public static void downMapGameLevel() {
-        gameLevel = gameLevel + 1;
+        gameLevel = gameLevel - 1;
     }
 
-    public static void upMapGameLevel() {
-        if (gameLevel > 0) {
-            gameLevel = gameLevel - 1;
-        }
-    }
+    public static void upMapGameLevel() { gameLevel = gameLevel + 1; }
 
     public static GameMap loadMap() {
         getWhichMapLoad();
@@ -90,6 +99,14 @@ public class MapLoader {
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.addSkeleton(new Skeleton(cell));
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            map.addBoss(new Boss(cell));
+                            break;
+                        case 'm':
+                            cell.setType(CellType.FLOOR);
+                            map.addOgre(new Ogre(cell));
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);

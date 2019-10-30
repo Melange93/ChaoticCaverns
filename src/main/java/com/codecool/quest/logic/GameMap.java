@@ -3,6 +3,8 @@ package com.codecool.quest.logic;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.actors.Skeleton;
+import com.codecool.quest.logic.actors.Ogre;
+import com.codecool.quest.logic.actors.Boss;
 
 import com.codecool.quest.logic.entrance.Entrance;
 
@@ -63,6 +65,10 @@ public class GameMap {
     }
 
     public void addSkeleton(Skeleton skeleton) { monsters.add(skeleton); }
+
+    public void addOgre(Ogre ogre) { monsters.add(ogre); }
+
+    public void addBoss(Boss boss) { monsters.add(boss); }
 
     public List<Actor> getMonsters() { return monsters; }
 
