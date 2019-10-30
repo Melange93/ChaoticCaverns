@@ -9,12 +9,13 @@ import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.items.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GameMap {
     private int width;
     private int height;
-    private Cell[][] cells;
+    public Cell[][] cells;
 
     private Player player;
     private List<Actor> monsters = new ArrayList<>();
@@ -43,6 +44,10 @@ public class GameMap {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void deletePlayer() {
+        this.player = null;
     }
 
     public Player getPlayer() {
@@ -99,6 +104,16 @@ public class GameMap {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < cells.length; i++) {
+            sb.append(Arrays.toString(cells[i]));
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 
 }

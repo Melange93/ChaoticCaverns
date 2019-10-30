@@ -7,13 +7,19 @@ import com.codecool.quest.logic.entrance.EntranceType;
 import com.codecool.quest.logic.items.*;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class MapLoader {
 
     private static int gameLevel = 0;
     private static String loadMap;
-    private static Player savePlayer;
+    public static Player savePlayer;
+
+    private static HashMap<Integer, GameMap> saveInvetory;
+    private static int saveHealt;
+    private static int saveArmor;
+    private static int saveDamage;
 
     private static void getWhichMapLoad() {
         switch (gameLevel) {
@@ -35,6 +41,15 @@ public class MapLoader {
     public static Player getSavePlayer() { return savePlayer; }
 
     public static void setSavePlayer(Player savePlayer) { MapLoader.savePlayer = savePlayer; }
+
+    public static HashMap getSaveInvetory() {
+        return saveInvetory;
+    }
+
+    public static void setSaveInvetory(HashMap invetory) {
+        MapLoader.saveInvetory = invetory;
+    }
+
 
     public static void downMapGameLevel() {
         gameLevel = gameLevel + 1;
@@ -126,4 +141,27 @@ public class MapLoader {
         return map;
     }
 
+    public static int getSaveHealt() {
+        return saveHealt;
+    }
+
+    public static void setSaveHealt(int saveHealt) {
+        MapLoader.saveHealt = saveHealt;
+    }
+
+    public static int getSaveArmor() {
+        return saveArmor;
+    }
+
+    public static void setSaveArmor(int saveArmor) {
+        MapLoader.saveArmor = saveArmor;
+    }
+
+    public static int getSaveDamage() {
+        return saveDamage;
+    }
+
+    public static void setSaveDamage(int saveDamage) {
+        MapLoader.saveDamage = saveDamage;
+    }
 }

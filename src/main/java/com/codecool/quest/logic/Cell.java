@@ -66,4 +66,12 @@ public class Cell implements Drawable {
     public int getY() {
         return y;
     }
+
+    @Override
+    public String toString() {
+        if (this.getActor() == null){
+            return "null";
+        }
+        return this.getActor().getTileName();
+    }
 }

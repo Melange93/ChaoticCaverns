@@ -16,6 +16,9 @@ public class Player extends Actor {
     public HashMap<String, Integer> getInventory() {
         return inventory;
     }
+    public void setInventory(HashMap<String, Integer> inventory) {
+        this.inventory = inventory;
+    }
 
     public String getTileName() {
         if (inventory.containsKey("sword") && inventory.containsKey("plateArmor")) {

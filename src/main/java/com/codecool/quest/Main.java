@@ -1,11 +1,6 @@
 package com.codecool.quest;
 
-import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.GameMap;
-import com.codecool.quest.logic.MapLoader;
-import com.codecool.quest.logic.PlayerMovementHelper;
-import com.codecool.quest.logic.actors.Player;
-import com.codecool.quest.logic.entrance.Entrance;
+import com.codecool.quest.logic.*;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
 import javafx.application.Application;
@@ -27,9 +22,7 @@ import javafx.stage.Stage;
 
 import com.codecool.quest.logic.items.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Main extends Application {
     private Random rand = new Random();
@@ -143,24 +136,33 @@ public class Main extends Application {
 
 
     public void saveMap() {
+        //MapLoader.savePlayer = map.getPlayer();
+        MapLoader.setSaveInvetory(map.getPlayer().getInventory());
+        MapLoader.setSaveHealt(map.getPlayer().getHealth());
+        MapLoader.setSaveDamage(map.getPlayer().getDamage());
+        MapLoader.setSaveArmor(map.getPlayer().getArmor());
         if (saveMaps.containsKey(MapLoader.getGameLevel())) {
             saveMaps.put(MapLoader.getGameLevel(), map);
         } else {
             int currentLevel = MapLoader.getGameLevel();
             saveMaps.put(currentLevel, map);
         }
-        MapLoader.setSavePlayer(map.getPlayer());
     }
 
     public void reloadMap() {
         int gameLevel = MapLoader.getGameLevel();
         if (saveMaps.containsKey(gameLevel)) {
-            Cell oldPlayerCell = saveMaps.get(gameLevel).getPlayer().getCell();
-            MapLoader.getSavePlayer().setCell(oldPlayerCell);
             map = saveMaps.get(gameLevel);
-
+            map.getPlayer().setInventory(MapLoader.getSaveInvetory());
+            map.getPlayer().setHealth(MapLoader.getSaveHealt());
+            map.getPlayer().setDamage(MapLoader.getSaveDamage());
+            map.getPlayer().setArmor(MapLoader.getSaveArmor());
         } else {
             map = MapLoader.loadMap();
+            map.getPlayer().setInventory(MapLoader.getSaveInvetory());
+            map.getPlayer().setHealth(MapLoader.getSaveHealt());
+            map.getPlayer().setDamage(MapLoader.getSaveDamage());
+            map.getPlayer().setArmor(MapLoader.getSaveArmor());
         }
         refresh();
     }
@@ -206,6 +208,7 @@ public class Main extends Application {
                 if (movementHelper.canMoveThroughTheDoor(0, 1)) {
                     refreshInventory();
                     map.getPlayer().move(0, 1);
+                    movementBetweenLevels();
                 }
                 refresh();
                 break;
@@ -213,6 +216,7 @@ public class Main extends Application {
                 if (movementHelper.canMoveThroughTheDoor(-1, 0)) {
                     refreshInventory();
                     map.getPlayer().move(-1, 0);
+                    movementBetweenLevels();
                 }
                 refresh();
                 break;
@@ -220,6 +224,7 @@ public class Main extends Application {
                 if (movementHelper.canMoveThroughTheDoor(1, 0)) {
                     refreshInventory();
                     map.getPlayer().move(1, 0);
+                    movementBetweenLevels();
                 }
                 refresh();
                 break;
