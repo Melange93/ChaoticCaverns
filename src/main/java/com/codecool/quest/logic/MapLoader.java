@@ -97,7 +97,7 @@ public class MapLoader {
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);
-                            map.setBreastPlate(new BreastPlate(cell));
+                            map.setPlateArmor(new PlateArmor(cell));
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);

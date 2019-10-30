@@ -37,6 +37,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label armorLabel = new Label();
+    Label damageLabel = new Label();
     Button pickUpButton = new Button();
 
     ListView<String> inventoryElementList = new ListView<>();
@@ -55,8 +57,12 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+        ui.add(new Label("Armor: "), 0, 1);
+        ui.add(armorLabel, 1, 1);
+        ui.add(new Label("Attack Damage: "), 0, 2);
+        ui.add(damageLabel, 1, 2);
 
-        ui.add(pickUpButton, 0, 1);
+        ui.add(pickUpButton, 0, 3);
         pickUpButton.setFocusTraversable(false);
         pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 e -> {
@@ -65,13 +71,13 @@ public class Main extends Application {
                 });
 
 
-        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(new Label("Inventory: "), 0, 4);
 
         inventoryElementList.setItems(items);
         inventoryElementList.setFocusTraversable(false);
         inventoryElementList.setPrefSize(120, 25);
 
-        ui.add(inventoryElementList, 0, 4);
+        ui.add(inventoryElementList, 0, 6);
 
         BorderPane borderPane = new BorderPane();
 
@@ -269,6 +275,8 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        armorLabel.setText("" + map.getPlayer().getArmor());
+        damageLabel.setText("" + map.getPlayer().getDamage());
         pickUpButton.setText("Pick up");
     }
 }

@@ -21,7 +21,7 @@ public class GameMap {
     private Key key;
     private Crown crown;
     private Sword sword ;
-    private BreastPlate breastPlate;
+    private PlateArmor plateArmor;
     private HealthPotion healthPotion;
     private Apple apple;
     private List<Entrance> entrances = new ArrayList<>();
@@ -81,9 +81,9 @@ public class GameMap {
 
     public Sword getSword() { return sword; }
 
-    public void setBreastPlate(BreastPlate breastPlate) { this.breastPlate = breastPlate; }
+    public void setPlateArmor(PlateArmor plateArmor) { this.plateArmor = plateArmor; }
 
-    public BreastPlate getBreastPlate() { return breastPlate; }
+    public PlateArmor getPlateArmor() { return plateArmor; }
 
     public void setHealthPotion(HealthPotion healthPotion) { this.healthPotion = healthPotion; }
 

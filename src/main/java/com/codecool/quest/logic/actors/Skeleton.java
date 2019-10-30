@@ -5,7 +5,7 @@ import com.codecool.quest.logic.actors.Actor;
 
 public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
-        super(cell, 4, 2, 0);
+        super(cell, 5, 3, 0);
     }
 
     @Override

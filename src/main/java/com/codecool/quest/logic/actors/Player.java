@@ -1,12 +1,8 @@
 package com.codecool.quest.logic.actors;
 
 import com.codecool.quest.logic.Cell;
-import com.codecool.quest.logic.entrance.Entrance;
-import com.codecool.quest.logic.entrance.EntranceType;
-import com.codecool.quest.logic.items.Apple;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class Player extends Actor {
@@ -22,17 +18,23 @@ public class Player extends Actor {
     }
 
     public String getTileName() {
+        if (inventory.containsKey("sword") && inventory.containsKey("plateArmor")) {
+            return "player3";
+        }
+        if (inventory.containsKey("sword")) {
+            return "player2";
+        }
         return "player";
     }
 
     public void itemChecker() {
         if (inventory.containsKey("sword")) {
-            int currentDamage = this.getDamage();
-            this.setDamage(currentDamage + 2);
+            int minDamage = this.getMinDamage();
+            this.setDamage(minDamage + 2);
         }
-        if (inventory.containsKey("breastPlate")) {
+        if (inventory.containsKey("plateArmor")) {
             int currentArmor = this.getArmor();
-            this.setArmor(currentArmor + 1);
+            this.setArmor(currentArmor + 2);
         }
         if (inventory.containsKey("apple")) {
             int currentHealth = this.getHealth();
