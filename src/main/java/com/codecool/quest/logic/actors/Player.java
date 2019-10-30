@@ -19,10 +19,13 @@ public class Player extends Actor {
 
     public String getTileName() {
         if (inventory.containsKey("sword") && inventory.containsKey("plateArmor")) {
-            return "player3";
+            return "playerArmorAndSword";
+        }
+        if (inventory.containsKey("plateArmor")) {
+            return "playerArmor";
         }
         if (inventory.containsKey("sword")) {
-            return "player2";
+            return "playerSword";
         }
         return "player";
     }
