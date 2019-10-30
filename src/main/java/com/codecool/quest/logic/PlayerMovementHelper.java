@@ -70,16 +70,4 @@ public class PlayerMovementHelper {
         return player.getCell().getNeighbor(dx, dy).getEntrance().getEntranceType() == EntranceType.UP;
     }
 
-    public void movementBetweenLevels(int dx, int dy) {
-
-        if (isAnEntrance()) {
-            if (isADownStair(dx, dy)){
-                MapLoader.downMapGameLevel();
-                MapLoader.loadMap();
-            } else if (isAUpStair(dx, dy)) {
-                MapLoader.upMapGameLevel();
-                MapLoader.loadMap();
-            }
-        }
-    }
 }

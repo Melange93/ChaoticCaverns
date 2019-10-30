@@ -13,6 +13,7 @@ public class MapLoader {
 
     private static int gameLevel = 0;
     private static String loadMap;
+    private static Player savePlayer;
 
     private static void getWhichMapLoad() {
         switch (gameLevel) {
@@ -30,6 +31,10 @@ public class MapLoader {
     public static int getGameLevel() {
         return gameLevel;
     }
+
+    public static Player getSavePlayer() { return savePlayer; }
+
+    public static void setSavePlayer(Player savePlayer) { MapLoader.savePlayer = savePlayer; }
 
     public static void downMapGameLevel() {
         gameLevel = gameLevel + 1;
@@ -91,9 +96,18 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.addEntrance(new Entrance(cell, EntranceType.DOWN));
                             break;
+                        case 'u':
+                            cell.setType(CellType.FLOOR);
+                            map.addEntrance(new Entrance(cell, EntranceType.UP));
+                            break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            if (savePlayer != null) {
+                                getSavePlayer().setCell(cell);
+                                map.setPlayer(savePlayer);
+                            } else {
+                                map.setPlayer(new Player(cell));
+                            }
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);

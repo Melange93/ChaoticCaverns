@@ -4,6 +4,7 @@ import com.codecool.quest.logic.Cell;
 import com.codecool.quest.logic.GameMap;
 import com.codecool.quest.logic.MapLoader;
 import com.codecool.quest.logic.PlayerMovementHelper;
+import com.codecool.quest.logic.actors.Player;
 import com.codecool.quest.logic.entrance.Entrance;
 import com.codecool.quest.logic.actors.Actor;
 import com.codecool.quest.logic.entrance.EntranceType;
@@ -25,6 +26,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import com.codecool.quest.logic.items.*;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -43,6 +46,8 @@ public class Main extends Application {
 
     ListView<String> inventoryElementList = new ListView<>();
     ObservableList<String> items = FXCollections.observableArrayList();
+
+    HashMap<Integer, GameMap> saveMaps = new HashMap<>();
 
 
     public static void main(String[] args) {
@@ -136,17 +141,44 @@ public class Main extends Application {
 
     }
 
-    public void movementBetweenLevels(int dx, int dy) {
 
+    public void saveMap() {
+        if (saveMaps.containsKey(MapLoader.getGameLevel())) {
+            saveMaps.put(MapLoader.getGameLevel(), map);
+        } else {
+            int currentLevel = MapLoader.getGameLevel();
+            saveMaps.put(currentLevel, map);
+        }
+        MapLoader.setSavePlayer(map.getPlayer());
     }
-        if (isAnEntrance()) {
-            if (isADownStair(dx, dy)){
+
+    public void reloadMap() {
+        int gameLevel = MapLoader.getGameLevel();
+        if (saveMaps.containsKey(gameLevel)) {
+            Cell oldPlayerCell = saveMaps.get(gameLevel).getPlayer().getCell();
+            MapLoader.getSavePlayer().setCell(oldPlayerCell);
+            map = saveMaps.get(gameLevel);
+
+        } else {
+            map = MapLoader.loadMap();
+        }
+        refresh();
+    }
+
+
+    public void movementBetweenLevels() {
+        Cell cell = map.getPlayer().getCell();
+        if (cell.getEntrance() != null) {
+            if (cell.getEntrance().getEntranceType() == EntranceType.DOWN){
+                saveMap();
                 MapLoader.downMapGameLevel();
-                MapLoader.loadMap();
-            } else if (isAUpStair(dx, dy)) {
+                reloadMap();
+            } else if (cell.getEntrance().getEntranceType() == EntranceType.UP) {
+                saveMap();
                 MapLoader.upMapGameLevel();
-                MapLoader.loadMap();
+                reloadMap();
             }
+
         }
     }
 
@@ -163,10 +195,10 @@ public class Main extends Application {
                 refresh();
                 break;
             case W:
-                movementHelper.movementBetweenLevels(0, -1);
                 if (movementHelper.canMoveThroughTheDoor(0, -1)) {
                     refreshInventory();
                     map.getPlayer().move(0, -1);
+                    movementBetweenLevels();
                 }
                 refresh();
                 break;
