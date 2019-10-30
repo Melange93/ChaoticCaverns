@@ -99,10 +99,6 @@ public class Main extends Application {
         return playerNextCell.getActor() != null;
     }
 
-    private boolean getMonstersCell() {
-        return true;
-    }
-
     private void refreshInventory() {
         items.clear();
         for (Map.Entry<String, Integer> stringIntegerEntry : map.getPlayer().getInventory().entrySet()) {
@@ -121,13 +117,6 @@ public class Main extends Application {
 
     }
 
-    private void isPortal(int dx, int dy) {
-        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
-        if (nextCellCoord.getEntrance() != null) {
-            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            System.out.println(nextCellIsDoorType);
-        }
-    }
 
     private void dropLoot(Cell cell) {
         if (cell.getActor() == null) {
