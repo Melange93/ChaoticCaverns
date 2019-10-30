@@ -13,6 +13,7 @@ public abstract class Actor implements Drawable {
     private int damage;
     private int minDamage = 2;
     private int armor;
+    private int minArmor = 0;
 
     public Actor(Cell cell, int health, int damage, int armor) {
         this.cell = cell;
@@ -49,6 +50,8 @@ public abstract class Actor implements Drawable {
     public int getArmor() { return armor; }
 
     public void setArmor(int armor) { this.armor = armor; }
+
+    public int getMinArmor() { return minArmor; }
 
     public Cell getCell() {
         return cell;
