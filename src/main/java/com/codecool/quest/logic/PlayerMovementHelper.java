@@ -17,7 +17,7 @@ public class PlayerMovementHelper {
         this.entrances = entrances;
     }
 
-    private boolean isAnEntrance(int dx, int dy) {
+    public boolean isAnEntrance(int dx, int dy) {
         Cell nextCell = player.getCell().getNeighbor(dx, dy);
         return nextCell.getEntrance() != null;
     }
@@ -60,5 +60,26 @@ public class PlayerMovementHelper {
             return !isAClosedDoor(dx, dy);
         }
         return true;
+    }
+
+    public boolean isADownStair(int dx, int dy) {
+        return player.getCell().getNeighbor(dx, dy).getEntrance().getEntranceType() == EntranceType.DOWN;
+    }
+
+    public boolean isAUpStair(int dx, int dy) {
+        return player.getCell().getNeighbor(dx, dy).getEntrance().getEntranceType() == EntranceType.UP;
+    }
+
+    public void movementBetweenLevels(int dx, int dy) {
+
+        if (isAnEntrance()) {
+            if (isADownStair(dx, dy)){
+                MapLoader.downMapGameLevel();
+                MapLoader.loadMap();
+            } else if (isAUpStair(dx, dy)) {
+                MapLoader.upMapGameLevel();
+                MapLoader.loadMap();
+            }
+        }
     }
 }

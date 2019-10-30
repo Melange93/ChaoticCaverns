@@ -24,9 +24,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import com.codecool.quest.logic.items.*;
 import java.util.Map;
+import java.util.Random;
 
 public class Main extends Application {
+    private Random rand = new Random();
     GameMap map = MapLoader.loadMap();
     PlayerMovementHelper movementHelper = new PlayerMovementHelper(map.getPlayer(), map.getEntrances());
     Canvas canvas = new Canvas(
@@ -34,6 +37,8 @@ public class Main extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label armorLabel = new Label();
+    Label damageLabel = new Label();
     Button pickUpButton = new Button();
 
     ListView<String> inventoryElementList = new ListView<>();
@@ -52,8 +57,12 @@ public class Main extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
+        ui.add(new Label("Armor: "), 0, 1);
+        ui.add(armorLabel, 1, 1);
+        ui.add(new Label("Attack Damage: "), 0, 2);
+        ui.add(damageLabel, 1, 2);
 
-        ui.add(pickUpButton, 0, 1);
+        ui.add(pickUpButton, 0, 3);
         pickUpButton.setFocusTraversable(false);
         pickUpButton.addEventHandler(MouseEvent.MOUSE_PRESSED,
                 e -> {
@@ -62,13 +71,13 @@ public class Main extends Application {
                 });
 
 
-        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(new Label("Inventory: "), 0, 4);
 
         inventoryElementList.setItems(items);
         inventoryElementList.setFocusTraversable(false);
         inventoryElementList.setPrefSize(120, 25);
 
-        ui.add(inventoryElementList, 0, 4);
+        ui.add(inventoryElementList, 0, 6);
 
         BorderPane borderPane = new BorderPane();
 
@@ -116,24 +125,52 @@ public class Main extends Application {
 
     }
 
-    private void isPortal(int dx, int dy) {
-        Cell nextCellCoord = map.getPlayer().getCell().getNeighbor(dx, dy);
-        if (nextCellCoord.getEntrance() != null) {
-            String nextCellIsDoorType = nextCellCoord.getEntrance().getEntranceType().getTileName();
-            System.out.println(nextCellIsDoorType);
+    private void dropLoot(Cell cell) {
+        if (cell.getActor() == null) {
+            int dropChance = rand.nextInt(100);
+            if (dropChance < 99) {
+                // here the game can choose from different items with rand maybe
+                int randItem = rand.nextInt(2);
+                switch (randItem) {
+                    case 0:
+                        map.setApple(new Apple(cell));
+                        break;
+                    case 1:
+                        map.setCrown(new Crown(cell));
+                        break;
+                }
+            }
+        }
+
+    }
+
+    public void movementBetweenLevels(int dx, int dy) {
+
+        if (isAnEntrance()) {
+            if (isADownStair(dx, dy)){
+                MapLoader.downMapGameLevel();
+                MapLoader.loadMap();
+            } else if (isAUpStair(dx, dy)) {
+                MapLoader.upMapGameLevel();
+                MapLoader.loadMap();
+            }
         }
     }
 
-
-
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
+            case Q:
+                map.getPlayer().usePotion();
+                refreshInventory();
+                refresh();
+                break;
             case E:
                 map.getPlayer().pickUp();
                 refreshInventory();
                 refresh();
                 break;
             case W:
+                movementHelper.movementBetweenLevels(0, -1);
                 if (movementHelper.canMoveThroughTheDoor(0, -1)) {
                     refreshInventory();
                     map.getPlayer().move(0, -1);
@@ -170,6 +207,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
                 }
@@ -184,6 +222,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
@@ -200,6 +239,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
@@ -216,6 +256,7 @@ public class Main extends Application {
                             if (gameOver()) {
                                 playerCell.setActor(null);
                             }
+                            dropLoot(monster.getCell());
                         }
                     }
 
@@ -244,6 +285,8 @@ public class Main extends Application {
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        armorLabel.setText("" + map.getPlayer().getArmor());
+        damageLabel.setText("" + map.getPlayer().getDamage());
         pickUpButton.setText("Pick up");
     }
 }
